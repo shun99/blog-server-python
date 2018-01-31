@@ -6,6 +6,8 @@ db = SQLAlchemy()
 
 
 def create_app(config_name):
+    # import pdb # 断点
+    # pdb.set_trace()
     app = Flask(__name__)
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
