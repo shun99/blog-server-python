@@ -10,6 +10,7 @@ pip install -r requirements.txt
 
 ```
 python manage.py shell //进入shell
+from app import db
 db.create_all()//初始化数据库
 ```
 - 运行
