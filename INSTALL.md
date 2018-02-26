@@ -30,18 +30,18 @@ virtualenv --version
 ```
 创建虚拟环境
 ```
-virtualenv env_name(环境名称)
+virtualenv venv(虚拟环境的默认名)
 ```
 激活虚拟环境
 ```
-source env_name/bin/activate(activate路径)
+source venv/bin/activate(activate路径)
 ```
 激活之后命令行前带有项目名
 ```
 //激活前
 yghysdrdeMBP:blog-server-python yghysdr$
 //激活后
-(blog-server-python) yghysdrdeMBP:blog-server-python yghysdr$
+(venv) yghysdrdeMBP:blog-server-python yghysdr$
 ```
 退出虚拟环境
 ```

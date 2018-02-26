@@ -3,7 +3,7 @@ from flask import abort, jsonify
 from . import user
 
 
-@user.route('/')
+@user.route('/user')
 def find():
     abort(404)
     return jsonify({"title": "登入成功"})

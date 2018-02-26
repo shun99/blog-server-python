@@ -16,6 +16,7 @@ def create_app(config_name):
     # 注册路由
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
     from .article import article as article_blueprint
     app.register_blueprint(article_blueprint, url_prefix='/api/article')
 
