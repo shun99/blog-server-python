@@ -1,11 +1,22 @@
-from .base import BaseModel
-from app import db
+from .base import BaseModel, mongo, JSONEncoder, ObjectId
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 class Article(BaseModel):
-    __tablename__ = 'articles'
+    def __init__(self, title, des, content):
+        BaseModel.__init__(self)
+        self.title = title
+        self.des = des
+        self.content = content
 
-    id = db.Column(db.String(100), unique=True, primary_key=True)
-    title = db.Column(db.TEXT)
-    des = db.Column(db.TEXT)
-    content = db.Column(db.TEXT)
+    def save(self):
+        mongo.db.articles.insert(self.__dict__)
+        return JSONEncoder().encode(self.__dict__)
+
+    @staticmethod
+    def get_one(article_id):
+        res = mongo.db.articles.find_one({'_id': ObjectId(article_id)})
+        logging.debug(res)
+        return JSONEncoder().encode(res)

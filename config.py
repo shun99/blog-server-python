@@ -20,15 +20,18 @@ class Config:
 class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'mysql://blog:##Blog123A@127.0.0.1/blog'
+    MONGO_URI = 'mongodb://localhost:27017/blog'
 
 
 class TestingConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'mysql://blog:##Blog123A@127.0.0.1/blog'
+    MONGO_URI = 'mongodb://localhost:27017/blog'
 
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = 'mysql://blog:##Blog123A@127.0.0.1/blog'
+    MONGO_URI = 'mongodb://localhost:27017/blog'
 
 
 config = {

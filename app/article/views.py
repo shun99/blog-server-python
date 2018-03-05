@@ -1,19 +1,20 @@
-from flask import jsonify, request, abort
+from flask import jsonify, request
+from app.models import Article
 from . import article
 import logging
 
+logging.basicConfig(level=logging.INFO)
 
-@article.route('/<article_id>')
-def get(article_id):
-    return jsonify({"title": "恭喜你看到这篇文章:" + article_id})
+
+@article.route('/')
+def get():
+    return Article.get_one(request.args.get('article_id')), [('Content-Type', 'application/json;charset=utf-8')]
 
 
 @article.route('/', methods=['POST'])
 def post():
-    try:
-        return jsonify({"文章": "创建成功" + request.json['article']})
-    except:
-        abort(404)
+    article_obj = Article(request.json['title'], request.json['des'], request.json['content'])
+    return article_obj.save(), [('Content-Type', 'application/json;charset=utf-8')]
 
 
 @article.errorhandler(404)
