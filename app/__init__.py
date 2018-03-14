@@ -14,12 +14,8 @@ def create_app(config_name):
     mongo.init_app(app)
 
     # 注册路由
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
-
-    from .article import article as article_blueprint
-    app.register_blueprint(article_blueprint, url_prefix='/api/article')
-
-    from .user import user as user_blueprint
-    app.register_blueprint(user_blueprint, url_prefix='/api/user')
+    from .api import b_main, b_article, b_auth
+    app.register_blueprint(b_main)
+    app.register_blueprint(b_article, url_prefix='/api/article')
+    app.register_blueprint(b_auth, url_prefix='/api/user')
     return app

@@ -1,7 +1,7 @@
 import time
-from app import mongo
-from utils import JSONEncoder
 from bson import ObjectId
+from app import mongo
+from app.utils import JSONEncoder
 
 
 class BaseModel(object):

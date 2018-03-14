@@ -1,15 +1,15 @@
 from flask import abort, jsonify
 
-from . import user
+from app.api import b_auth
 
 
-@user.route('/', methods=['GET'])
-@user.route('/login', methods=['POST'])
+@b_auth.route('/', methods=['GET'])
+@b_auth.route('/login', methods=['POST'])
 def login():
     # abort(404)
     return jsonify({"title": "登入成功"})
 
 
-@user.errorhandler(404)
+@b_auth.errorhandler(404)
 def page_not_found(e):
     return jsonify({"title": "登入失败"}), 404
