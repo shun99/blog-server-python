@@ -5,7 +5,7 @@ from config import config
 mongo = PyMongo()
 
 
-def create_app(config_name):
+def create_app(config_name, blueprints=None):
     # import pdb # 断点
     # pdb.set_trace()
     app = Flask(__name__)
@@ -14,9 +14,12 @@ def create_app(config_name):
     mongo.init_app(app)
 
     # 注册路由
-    from .api import b_main, b_article, b_auth, b_label
-    app.register_blueprint(b_main)
-    app.register_blueprint(b_article, url_prefix='/api/article')
-    app.register_blueprint(b_auth, url_prefix='/api/user')
-    app.register_blueprint(b_label, url_prefix='/api/label')
+    if blueprints is None:
+        from .api import BLUEPRINTS
+        blueprints_resister(app, BLUEPRINTS)
     return app
+
+
+def blueprints_resister(app, blueprints):
+    for bp in blueprints:
+        app.register_blueprint(bp)

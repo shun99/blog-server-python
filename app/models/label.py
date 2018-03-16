@@ -1,4 +1,5 @@
-from .base import BaseModel, mongo, JSONEncoder
+from .base import BaseModel, mongo
+from app.utils.string_format import objectIdToId
 from json import dumps
 
 
@@ -17,7 +18,12 @@ class Label(BaseModel):
             return dumps({"errorMsg": "label type existing"})
 
         mongo.db.lables.insert(self.__dict__)
-        return JSONEncoder().encode(self.__dict__)
+        return objectIdToId(self.__dict__)
+
+    @staticmethod
+    def get_one(label_type):
+        data = dumps(mongo.db.lables.find({'type': label_type}))
+        return data
 
     @staticmethod
     def get_list():

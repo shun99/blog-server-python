@@ -1,26 +1,27 @@
-from .base import BaseModel, ObjectId, mongo, JSONEncoder
+from .base import BaseModel, ObjectId, mongo
+from app.utils.string_format import objectIdToId
 import logging
 
 logging.basicConfig(level=logging.INFO)
 
 
 class Article(BaseModel):
-    def __init__(self, title='标题', des='没有描述', content='内容', sort=[0]):
+    def __init__(self, title='标题', des='没有描述', content='内容', type=[0]):
         BaseModel.__init__(self)
         self.title = title
         self.des = des
         self.content = content
-        self.sort = sort
+        self.type = type
 
     def post(self):
         mongo.db.articles.insert(self.__dict__)
-        return JSONEncoder().encode(self.__dict__)
+        return objectIdToId(self.__dict__)
 
     @staticmethod
     def get_one(article_id):
         res = mongo.db.articles.find_one({'_id': ObjectId(article_id)})
         logging.debug(res)
-        return JSONEncoder().encode(res)
+        return objectIdToId(res)
 
     @staticmethod
     def put_one(article_id, article):
@@ -36,4 +37,4 @@ class Article(BaseModel):
             if article.content is None:
                 data.content = article.content
             data = mongo.db.articles.update_one({'_id': ObjectId(article_id)}, {data})
-        return JSONEncoder().encode(data)
+        return objectIdToId(data)
