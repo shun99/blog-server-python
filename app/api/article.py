@@ -1,6 +1,8 @@
 from .base import BaseResource
 from flask import jsonify, request
 from app.models import Article
+from app.wraps.token import token_required
+from app.wraps.error import robust
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -10,6 +12,8 @@ class ArticleRes(BaseResource):
     def get(self):
         return Article.get_one(request.args.get('article_id'))
 
+    @robust
+    @token_required
     def post(self):
         article_obj = Article(request.json['title'],
                               request.json['des'],
