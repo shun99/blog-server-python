@@ -29,7 +29,7 @@ class Article(BaseModel):
         if type == 0:
             data_list = list(mongo.db.articles.find().skip(size * (page - 1)).limit(size))
         else:
-            data_list = list(mongo.db.articles.find({'type': type}).skip(size * (page - 1)).limit(size))
+            data_list = list(mongo.db.articles.find({'type': type}, {"_id": 1, "title": 1, "des": 1}).skip(size * (page - 1)).limit(size))
         for data in data_list:
             objectIdToId(data)
         return data_list

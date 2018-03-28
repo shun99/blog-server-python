@@ -21,12 +21,12 @@ class AuthLoginRes(BaseResource):
     @robust
     @use_args(user_login_args)
     def post(self, args):
-        return User.vertify(args[constants.tel], args[constants.pwd])
+        return User.vertify(args.get(constants.tel), args.get(constants.pwd))
 
 
 class AuthRegisterRes(BaseResource):
     @robust
     @use_args(user_register_args)
     def post(self, args):
-        data = User(tel=args[constants.tel], pwd=args[constants.pwd])
+        data = User(tel=args.get(constants.tel), pwd=args.get(constants.pwd))
         return data.inset_one()

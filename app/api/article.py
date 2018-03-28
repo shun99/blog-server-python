@@ -41,16 +41,16 @@ class ArticleRes(BaseResource):
     @robust
     @use_args(article_get_args)
     def get(self, args):
-        return Article.get_one(args[constants.article_id])
+        return Article.get_one(args.get(constants.article_id))
 
     @robust
     @token_required
     @use_args(article_post_args)
     def post(self, args):
-        article_obj = Article(args[constants.article_type],
-                              args[constants.article_des],
-                              args[constants.article_content],
-                              args[constants.article_type])
+        article_obj = Article(args.get(constants.article_type),
+                              args.get(constants.article_des),
+                              args.get(constants.article_content),
+                              args.get(constants.article_type))
         return article_obj.post()
 
     @robust
@@ -59,10 +59,10 @@ class ArticleRes(BaseResource):
     def put(self, args):
         data = Article.put_one(args[constants.article_id],
                                Article(
-                                   args[constants.article_type],
-                                   args[constants.article_des],
-                                   args[constants.article_content],
-                                   args[constants.article_type]))
+                                   args.get(constants.article_type),
+                                   args.get(constants.article_des),
+                                   args.get(constants.article_content),
+                                   args.get(constants.article_type)))
         return data
 
 
@@ -70,7 +70,7 @@ class ArticleListRes(BaseResource):
     @robust
     @use_args(article_get_list_args)
     def get(self, args):
-        data = Article.get_list(args[constants.article_type],
-                                args[constants.page],
-                                args[constants.size])
+        data = Article.get_list(args.get(constants.article_type),
+                                args.get(constants.page),
+                                args.get(constants.size))
         return data

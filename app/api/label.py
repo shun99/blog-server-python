@@ -25,7 +25,7 @@ class LabelRes(BaseResource):
     @robust
     @use_args(label_get_args)
     def get(self, args):
-        data = Label.get_one(args[constants.label_id])
+        data = Label.get_one(args.get(constants.label_id))
         logging.info(data)
         return data
 
@@ -33,8 +33,8 @@ class LabelRes(BaseResource):
     @token_required
     @use_args(label_get_args)
     def post(self, args):
-        label = Label(args[constants.label_type],
-                      args[constants.label_name])
+        label = Label(args.get(constants.label_type),
+                      args.get(constants.label_name))
         return label.post()
 
 
