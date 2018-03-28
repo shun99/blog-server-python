@@ -10,3 +10,9 @@ sudo mkdir -p /data/db
 //进入mongodb的shell（在新窗口）
 mongo
 ```
+
+## 学习笔记
+```
+mongodb.find()结果是一个Cursor，通过list可以转化成 列表
+list(mongo.db.articles.find())
+```

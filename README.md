@@ -30,5 +30,30 @@ python manage.py runserver
 - 更改项目结构
 - token校验+异常捕获
 
+
+## api 文档
+```
+baseUrl: /api/v1
+```
+### 用户
+|地址|类型|详情|token|
+|---|---|---|---|
+|auth/login|GET|登入|否|
+
+### 文章
+|地址|类型|详情|token|
+|---|---|---|---|
+|/article/list|GET|文章列表|
+|/article|GET|文章详情|否|
+|/article|POST|创建文章|是|
+|/article|PUT|修改文章|是|
+
+### lable
+|地址|类型|详情|token|
+|---|---|---|---|
+|/lable/list|GET|标签列表|否|
+
+
+
 ## 参考
 [数据库+Flask-script+flask_sqlalchemy](http://blog.csdn.net/happyanger6/article/details/53947162)

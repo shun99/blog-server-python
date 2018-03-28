@@ -6,7 +6,14 @@ def robust(actual_do):
         try:
             return actual_do(*args, **kwargs)
         except Exception as e:
-            params = e.args
-            abort(e.args[1] | 422, params)
+            try:
+                data = e.data['messages']
+            except:
+                data = e.data
+            try:
+                code = e.code
+            except:
+                code = 422
+            abort(code, data)
 
     return add_robust

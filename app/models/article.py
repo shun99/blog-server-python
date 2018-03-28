@@ -1,3 +1,4 @@
+from app.utils.AppException import AppException
 from .base import BaseModel, ObjectId, mongo
 from app.utils.string_format import objectIdToId
 import logging
@@ -20,15 +21,23 @@ class Article(BaseModel):
     @staticmethod
     def get_one(article_id):
         res = mongo.db.articles.find_one({'_id': ObjectId(article_id)})
-        logging.debug(res)
         return objectIdToId(res)
 
     @staticmethod
+    def get_list(type, page=1, size=10):
+        if type == 0:
+            data_list = list(mongo.db.articles.find().skip(size * (page - 1)).limit(size))
+        else:
+            data_list = list(mongo.db.articles.find({'type': type}).skip(size * (page - 1)).limit(size))
+        for data in data_list:
+            objectIdToId(data)
+        return data_list
+
+    @staticmethod
     def put_one(article_id, article):
-        # title = None, des = None, content = None
         data = mongo.db.articles.find_one({'_id': ObjectId(article_id)})
         if data is None:
-            raise Exception('No Article')
+            raise AppException('No Article')
         else:
             if article.title is None:
                 data.title = article.title

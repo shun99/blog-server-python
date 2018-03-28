@@ -1,3 +1,4 @@
+from app.utils.AppException import AppException
 from .base import BaseModel, mongo, ObjectId
 import uuid
 from app.utils.string_format import objectIdToId
@@ -25,26 +26,26 @@ class Auth(BaseModel):
     def inset_one(self):
         nam_count = mongo.db.users.find({"tel": self.tel}).count()
         if self.tel is None:
-            raise Exception("tel can not empty")
+            raise AppException("tel can not empty")
         if self.phone is None:
-            raise Exception("phone can not empty")
+            raise AppException("phone can not empty")
         if nam_count > 0:
-            raise Exception("Phone number has been registered")
+            raise AppException("Phone number has been registered")
         return objectIdToId(mongo.db.users.insert(self.__dict__))
 
     @staticmethod
     def get_one(tel, pwd):
         data = mongo.db.users.find_one({"tel": tel})
         if None is data:
-            raise Exception("Phone number no registered")
+            raise AppException("Phone number no registered")
         if data['pwd'] != pwd:
-            raise Exception("pwd error")
+            raise AppException("pwd error")
         return objectIdToId(data)
 
     @staticmethod
     def verify_token(user_id, token):
         data = mongo.db.users.find_one({"_id": ObjectId(user_id)})
         if None is data:
-            raise Exception("user no exit", 422)
+            raise AppException("user no exit", 422)
         if data['token'] != token:
-            raise Exception("token is not valid", 422)
+            raise AppException("token is not valid", 422)
