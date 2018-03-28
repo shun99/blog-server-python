@@ -14,15 +14,6 @@ class User(BaseModel):
         self.pwd = pwd
         self.token = uuid.uuid4().hex
 
-    @staticmethod
-    def get_one(tel):
-        data = mongo.db.users.find_one({"tel": tel})
-        if None is data:
-            raise Exception("Phone number no registered")
-        return objectIdToId(data)
-
-
-class Auth(BaseModel):
     def inset_one(self):
         nam_count = mongo.db.users.find({"tel": self.tel}).count()
         if self.tel is None:
@@ -34,7 +25,14 @@ class Auth(BaseModel):
         return objectIdToId(mongo.db.users.insert(self.__dict__))
 
     @staticmethod
-    def get_one(tel, pwd):
+    def get_des(tel):
+        data = mongo.db.users.find_one({"tel": tel})
+        if None is data:
+            raise Exception("Phone number no registered")
+        return objectIdToId(data)
+
+    @staticmethod
+    def verify_pwd(tel, pwd):
         data = mongo.db.users.find_one({"tel": tel})
         if None is data:
             raise AppException("Phone number no registered")

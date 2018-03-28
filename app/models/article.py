@@ -1,7 +1,8 @@
-from app.utils.AppException import AppException
-from .base import BaseModel, ObjectId, mongo
-from app.utils.string_format import objectIdToId
 import logging
+
+from app.utils.AppException import AppException
+from app.utils.string_format import objectIdToId
+from .base import BaseModel, ObjectId, mongo
 
 logging.basicConfig(level=logging.INFO)
 
@@ -39,11 +40,15 @@ class Article(BaseModel):
         if data is None:
             raise AppException('No Article')
         else:
-            if article.title is None:
-                data.title = article.title
-            if article.des is None:
-                data.des = article.des
-            if article.content is None:
-                data.content = article.content
-            data = mongo.db.articles.update_one({'_id': ObjectId(article_id)}, {data})
-        return objectIdToId(data)
+            if article.title:
+                data['title'] = article.title
+            if article.des:
+                data['des'] = article.des
+            if article.content:
+                data['content'] = article.content
+            if article.type:
+                data['type'] = article.type
+            del (data['_id'])
+            mongo.db.articles.update_one({'_id': ObjectId(article_id)}, {'$set': data})
+            data = mongo.db.articles.find_one({'_id': ObjectId(article_id)})
+            return objectIdToId(data)

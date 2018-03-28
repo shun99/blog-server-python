@@ -1,6 +1,5 @@
 import logging
 
-from flask import request
 from webargs import fields
 from webargs.flaskparser import use_args
 
@@ -8,62 +7,62 @@ from app.models import Article
 from app.wraps.error import robust
 from app.wraps.token import token_required
 from .base import BaseResource
+from app import constants
 
 logging.basicConfig(level=logging.INFO)
 
 article_get_args = {
-    'article_id': fields.Str(require=True)
+    constants.article_id: fields.Str(require=True)
 }
 
 article_get_list_args = {
-    'type': fields.Int(),
-    'page': fields.Int(),
-    'size': fields.Int()
+    constants.article_type: fields.Int(),
+    constants.page: fields.Int(),
+    constants.size: fields.Int()
 }
 
 article_post_args = {
-    'title': fields.Str(require=True),
-    'des': fields.Str(require=True),
-    'content': fields.Str(require=True),
-    'articleType': fields.List(fields.Int())
+    constants.article_title: fields.Str(require=True),
+    constants.article_des: fields.Str(require=True),
+    constants.article_content: fields.Str(require=True),
+    constants.article_type: fields.List(fields.Int())
 }
 
 article_put_args = {
-    'article_id': fields.Str(require=True),
-    'title': fields.Str(require=True),
-    'des': fields.Str(require=True),
-    'content': fields.Str(require=True),
-    'articleType': fields.List(fields.Int())
+    constants.article_id: fields.Str(require=True),
+    constants.article_title: fields.Str(),
+    constants.article_des: fields.Str(),
+    constants.article_content: fields.Str(),
+    constants.article_type: fields.List(fields.Int())
 }
 
 
 class ArticleRes(BaseResource):
     @robust
     @use_args(article_get_args)
-    def get(self):
-        return Article.get_one(request.args.get('article_id'))
+    def get(self, args):
+        return Article.get_one(args[constants.article_id])
 
     @robust
     @token_required
     @use_args(article_post_args)
     def post(self, args):
-        article_obj = Article(args.get('title'),
-                              args.get('des'),
-                              args.get('content'),
-                              args.get('articleType'))
+        article_obj = Article(args[constants.article_type],
+                              args[constants.article_des],
+                              args[constants.article_content],
+                              args[constants.article_type])
         return article_obj.post()
 
     @robust
     @token_required
     @use_args(article_put_args)
     def put(self, args):
-        data = Article.put_one(request.json['article_id'],
+        data = Article.put_one(args[constants.article_id],
                                Article(
-                                   args.get('title'),
-                                   args.get('des'),
-                                   args.get('content'),
-                                   args.get('articleType'))
-                               )
+                                   args[constants.article_type],
+                                   args[constants.article_des],
+                                   args[constants.article_content],
+                                   args[constants.article_type]))
         return data
 
 
@@ -71,7 +70,7 @@ class ArticleListRes(BaseResource):
     @robust
     @use_args(article_get_list_args)
     def get(self, args):
-        data = Article.get_list(args.get('type'),
-                                args.get('page'),
-                                args.get('size'))
+        data = Article.get_list(args[constants.article_type],
+                                args[constants.page],
+                                args[constants.size])
         return data
