@@ -67,7 +67,7 @@ class ArticleRes(BaseResource):
 
 
 class ArticleListRes(BaseResource):
-    @robust
+
     @use_args(article_get_list_args)
     def get(self, args):
         data = Article.get_list(args.get(constants.article_type),

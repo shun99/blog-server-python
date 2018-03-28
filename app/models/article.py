@@ -1,7 +1,7 @@
 import logging
 
 from app.utils.AppException import AppException
-from app.utils.string_format import objectIdToId
+from app.utils.string_format import objectIdToId, data_to_api
 from .base import BaseModel, ObjectId, mongo
 
 logging.basicConfig(level=logging.INFO)
@@ -29,10 +29,13 @@ class Article(BaseModel):
         if type == 0:
             data_list = list(mongo.db.articles.find().skip(size * (page - 1)).limit(size))
         else:
-            data_list = list(mongo.db.articles.find({'type': type}, {"_id": 1, "title": 1, "des": 1}).skip(size * (page - 1)).limit(size))
+            data_list = list(
+                mongo.db.articles.find({'type': type}, {"_id": 1, "title": 1, "des": 1}).skip(size * (page - 1)).limit(
+                    size + 1))
         for data in data_list:
             objectIdToId(data)
-        return data_list
+        more = len(data_list) > size
+        return data_to_api(data_list[0:size], haveMore=more)
 
     @staticmethod
     def put_one(article_id, article):

@@ -8,6 +8,15 @@ def objectIdToId(data):
     return data
 
 
+def data_to_api(data, **kwargs):
+    response = {
+        "code": kwargs.get('code', 0),
+        "data": data,
+        "haveMore": kwargs.get('haveMore', False)
+    }
+    return response
+
+
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, ObjectId):
