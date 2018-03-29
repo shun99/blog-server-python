@@ -27,5 +27,5 @@ class Label(BaseModel):
 
     @staticmethod
     def get_list():
-        data = mongo.db.lables.find({}, {"name": 1, "type": 1, "_id": 0})
-        return data.__dict__
+        data_list = list(mongo.db.lables.find({}, {"name": 1, "type": 1, "_id": 0}))
+        return data_list

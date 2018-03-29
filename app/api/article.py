@@ -8,6 +8,7 @@ from app.wraps.error import robust
 from app.wraps.token import token_required
 from .base import BaseResource
 from app import constants
+from app.utils.string_format import app_response
 
 logging.basicConfig(level=logging.INFO)
 
@@ -41,7 +42,7 @@ class ArticleRes(BaseResource):
     @robust
     @use_args(article_get_args)
     def get(self, args):
-        return Article.get_one(args.get(constants.article_id))
+        return app_response(Article.get_one(args.get(constants.article_id)))
 
     @robust
     @token_required
@@ -51,7 +52,7 @@ class ArticleRes(BaseResource):
                               args.get(constants.article_des),
                               args.get(constants.article_content),
                               args.get(constants.article_type))
-        return article_obj.post()
+        return app_response(article_obj.post())
 
     @robust
     @token_required
@@ -63,14 +64,13 @@ class ArticleRes(BaseResource):
                                    args.get(constants.article_des),
                                    args.get(constants.article_content),
                                    args.get(constants.article_type)))
-        return data
+        return app_response(data)
 
 
 class ArticleListRes(BaseResource):
-
     @use_args(article_get_list_args)
     def get(self, args):
         data = Article.get_list(args.get(constants.article_type),
                                 args.get(constants.page),
                                 args.get(constants.size))
-        return data
+        return app_response(data[0], haveMore=data[1])

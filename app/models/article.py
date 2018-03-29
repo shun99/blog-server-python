@@ -1,7 +1,7 @@
 import logging
 
 from app.utils.AppException import AppException
-from app.utils.string_format import objectIdToId, data_to_api
+from app.utils.string_format import objectIdToId
 from .base import BaseModel, ObjectId, mongo
 
 logging.basicConfig(level=logging.INFO)
@@ -35,7 +35,8 @@ class Article(BaseModel):
         for data in data_list:
             objectIdToId(data)
         more = len(data_list) > size
-        return data_to_api(data_list[0:size], haveMore=more)
+        # data_to_api(data_list[0:size], haveMore=more)
+        return data_list[0:size], more
 
     @staticmethod
     def put_one(article_id, article):

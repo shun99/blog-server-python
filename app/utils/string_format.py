@@ -8,7 +8,13 @@ def objectIdToId(data):
     return data
 
 
-def data_to_api(data, **kwargs):
+def mongodb(data):
+    data['id'] = str(data['_id'])
+    del (data['_id'])
+    return data
+
+
+def app_response(data, **kwargs):
     response = {
         "code": kwargs.get('code', 0),
         "data": data,
