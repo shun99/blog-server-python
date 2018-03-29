@@ -4,7 +4,7 @@ from webargs import fields
 from webargs.flaskparser import use_args
 
 from app.wraps.error import robust
-from app.wraps.token import token_required
+from app.wraps.verify import token_verify
 from .base import BaseResource
 from ..models import Label
 from app import constants
@@ -31,7 +31,7 @@ class LabelRes(BaseResource):
         return app_response(data)
 
     @robust
-    @token_required
+    @token_verify
     @use_args(label_get_args)
     def post(self, args):
         label = Label(args.get(constants.label_type),
